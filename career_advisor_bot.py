@@ -1,54 +1,85 @@
-# career_advisor_bot.py
-
 import streamlit as st
 
-# Title
-st.title("🎓 Career Advisor Bot")
-st.subheader("Get career suggestions based on your interests!")
+st.set_page_config(page_title="Career Advisor", layout="wide")
 
-# Sidebar
-st.sidebar.title("👤 User Info")
-name = st.sidebar.text_input("Enter your name:")
-if name:
-    st.write(f"Hi {name}! Let's explore your career path ✨")
+# Custom CSS for style
+st.markdown("""
+    <style>
+    body {
+        background-color: #f4f6f9;
+    }
+    .main {
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .title {
+        font-size: 38px;
+        font-weight: bold;
+        color: #4A90E2;
+    }
+    .sub {
+        font-size: 22px;
+        color: #555;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# Selectbox for interests
-interest = st.selectbox(
-    "Choose your primary interest:",
-    ["", "Data Science", "Design", "Law", "Marketing", "Cybersecurity", "Psychology"]
-)
+# ---------------- LOGIN PAGE ----------------
+st.markdown("<div class='main'>", unsafe_allow_html=True)
+st.markdown("<h1 class='title'>🔐 Welcome to Career Advisor</h1>", unsafe_allow_html=True)
 
-# File upload (just for future use/fun)
-uploaded_file = st.file_uploader("📄 Upload your resume", type=["pdf", "docx"])
-if uploaded_file is not None:
-    st.success("Resume uploaded successfully!")
+st.markdown("### 👋 Please sign in to continue")
+email = st.text_input("Email", placeholder="Enter your email")
+password = st.text_input("Password", placeholder="Enter your password", type="password")
 
-# Career Suggestions
-if st.button("Suggest Career"):
-    if interest == "Data Science":
-        st.success("👩‍💻 Suggested Careers: Data Scientist, Data Analyst, ML Engineer")
-        st.info("📘 Learn Python, Pandas, SQL, Machine Learning")
-    elif interest == "Design":
-        st.success("🎨 Suggested Careers: UI/UX Designer, Product Designer")
-        st.info("📘 Learn Figma, Adobe XD, User Research")
-    elif interest == "Law":
-        st.success("⚖️ Suggested Careers: Legal Advisor, Corporate Lawyer")
-        st.info("📘 Learn Constitutional Law, Legal Drafting")
-    elif interest == "Marketing":
-        st.success("📢 Suggested Careers: Digital Marketer, SEO Analyst")
-        st.info("📘 Learn SEO, Social Media Strategy, Google Ads")
-    elif interest == "Cybersecurity":
-        st.success("🛡️ Suggested Careers: Security Analyst, Ethical Hacker")
-        st.info("📘 Learn Networking, Kali Linux, Penetration Testing")
-    elif interest == "Psychology":
-        st.success("🧠 Suggested Careers: Therapist, Research Psychologist")
-        st.info("📘 Learn Counselling Techniques, Cognitive Science")
+if st.button("Login"):
+    if email and password:
+        st.success("✅ Login successful!")
+        st.balloons()
+
+        # ---------------- DETAILS PAGE ----------------
+        st.markdown("---")
+        st.markdown("## 🧾 Enter Your Details")
+
+        name = st.text_input("👤 Name")
+        age = st.number_input("🎂 Age", min_value=10, max_value=100)
+        stream = st.selectbox("📚 Your Stream", ["AI & DS", "Computer Science", "Commerce", "Arts", "Others"])
+        interest = st.text_input("💡 Your Primary Interest (e.g., Data Science, Law, Design, Psychology...)")
+        img = st.file_uploader("📸 Upload Your Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
+
+        if st.button("Suggest Career"):
+            st.markdown("---")
+            st.markdown(f"### 👋 Hello **{name.title()}**!")
+            if img:
+                st.image(img, width=150)
+
+            st.markdown(f"##### 🎓 Based on your interest in **{interest.title()}**, we recommend:")
+
+            # Career Suggestions
+            career = "🔍 Try being curious! Explore multiple fields."
+            if "data" in interest.lower():
+                career = "💻 Data Scientist, Analyst, ML Engineer"
+            elif "design" in interest.lower():
+                career = "🎨 UI/UX Designer, Product Designer"
+            elif "law" in interest.lower():
+                career = "⚖️ Legal Advisor, Corporate Lawyer"
+            elif "psychology" in interest.lower():
+                career = "🧠 Psychologist, Counselor, HR Specialist"
+            elif "business" in interest.lower():
+                career = "📈 Business Analyst, Entrepreneur, Product Manager"
+
+            st.success(career)
+
+            st.markdown("""
+                > _✨ "Choose a job you love, and you will never have to work a day in your life."_  
+                — Confucius
+            """)
     else:
-        st.warning("Please select an interest!")
-
-# Fun image
-st.image("https://cdn.pixabay.com/photo/2017/01/10/19/05/laptop-1967479_960_720.jpg", caption="You got this!")
+        st.error("❗Please fill in both email and password to continue.")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
-st.caption("Built with ❤️ by Priyal Khunia")
+st.caption("🚀 Built with ❤️ by Priyal Khunia")
